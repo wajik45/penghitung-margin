@@ -21,16 +21,20 @@
       input {
         padding: .3rem;
       }
+      
+      p {
+        color: orange;
+      }
     </style>
   </head>
   <body>
     <h2>Penghitung Margin</h2>
-    <br />
+    <p>Alert : khusus bilangan bulat!</p>
     <form>
       <label for="harga-beli">Harga NTA : <span></span></label>
       <br />
       <br />
-      <input type="number" id="harga-beli" placeholder="Masukkan harga beli" />
+      <input type="text" id="harga-beli" placeholder="Masukkan harga beli" />
       
       <br />
       <br />
@@ -38,7 +42,7 @@
       <label for="harga-jual">Harga Jual : <span></span></label>
       <br />
       <br />
-      <input type="number" id="harga-jual" placeholder="Masukkan harga jual" />
+      <input type="text" id="harga-jual" placeholder="Masukkan harga jual" />
       
       <br />
       <br />
@@ -46,7 +50,7 @@
       <label for="point">Point : <span></span> = <span></span></label>
       <br />
       <br />
-      <input type="number" id="point" placeholder="Masukkan point">
+      <input type="text" id="point" placeholder="Masukkan point">
       
       <br />
       <br />
@@ -66,9 +70,7 @@
           .toLocaleString("id-ID", { style: "currency", currency: "IDR" });
         }
         
-        return value
-          .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
-          .replace(",00", "");
+        return value.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }).replace(",00", '');
       }
       
       function getLabelValue(element) {
@@ -103,6 +105,8 @@
       inputs.forEach((input) => {
         input.addEventListener("input", function() {
           const labelValue = getLabelValue(this);
+          
+          this.value = this.value.replace(/[^\d]/g, "");
           
           if (this.id === "point") {
             const pointResult = Number(this.value);
