@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penghitung Margin</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      
+      body {
+        background-color: #222;
+        color: #ddd;
+      }    
+    
+      form {
+        font-weight: bold;
+      }
+      
+      input {
+        padding: .3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Penghitung Margin</h2>
+    <br />
+    <form>
+      <label for="harga-beli">Harga NTA : <span></span></label>
+      <br />
+      <br />
+      <input type="number" id="harga-beli" placeholder="Masukkan harga beli" />
+      
+      <br />
+      <br />
+      
+      <label for="harga-jual">Harga Jual : <span></span></label>
+      <br />
+      <br />
+      <input type="number" id="harga-jual" placeholder="Masukkan harga jual" />
+      
+      <br />
+      <br />
+      
+      <label for="point">Point : <span></span> = <span></span></label>
+      <br />
+      <br />
+      <input type="number" id="point" placeholder="Masukkan point">
+      
+      <br />
+      <br />
+      
+      <span>Margin : <span id="margin"></span></span>
+      
+      <br />
+      <br />
+      
+      <button>Reset</button>
+    </form>
+    
+    <script>
+      function toIDR(value) {
+        if (nilaiDefault.includes(",00")) {
+          return value
+          .toLocaleString("id-ID", { style: "currency", currency: "IDR" });
+        }
+        
+        return value
+          .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+          .replace(",00", "");
+      }
+      
+      function getLabelValue(element) {
+        return element
+          .previousElementSibling
+          .previousElementSibling
+          .previousElementSibling
+          .firstElementChild;
+      }
+      
+      function setDefault() {
+        getLabelValue(hargaBeli).textContent = nilaiDefault;
+        getLabelValue(hargaJual).textContent = nilaiDefault;
+        getLabelValue(point).textContent = "0";
+        getLabelValue(point).nextElementSibling.textContent = nilaiDefault;
+        marginElement.textContent = nilaiDefault;
+        marginElement.style.color = "orange";
+      }
+      
+      const nilaiDefault = "Rp 0";
+      const perPoint = 5000;
+      const form = document.querySelector("form");
+      const button = document.querySelector("button");
+      const inputs = document.querySelectorAll("input");
+      const hargaBeli = document.getElementById("harga-beli");
+      const hargaJual = document.getElementById("harga-jual");
+      const point = document.getElementById("point");
+      const marginElement = document.getElementById("margin");
+      
+      setDefault();
+      
+      inputs.forEach((input) => {
+        input.addEventListener("input", function() {
+          const labelValue = getLabelValue(this);
+          
+          if (this.id === "point") {
+            const pointResult = Number(this.value);
+            const result = Number(this.value) * perPoint;
+            
+            labelValue.textContent = pointResult;
+            labelValue.nextElementSibling.textContent = toIDR(result);
+          } else {
+            const result = Number(this.value);
+            
+            labelValue.textContent = toIDR(result);
+          }
+          
+          const margin = Number(hargaJual.value) - Number(hargaBeli.value) + Number(point.value) * perPoint;
+        
+           marginElement.textContent = toIDR(margin);
+           
+           if (margin > 0) {
+             marginElement.style.color = "green";
+           } else if (margin < 0) {
+             marginElement.style.color = "red";
+           } else {
+             marginElement.style.color = "orange";
+           }
+        });
+      });
+      
+      button.addEventListener("click", function(e) {
+        e.preventDefault();
+       
+        setDefault();
+        
+        form.reset();
+      });
+    </script>
+  </body>
+</html>
