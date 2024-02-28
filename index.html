@@ -1,146 +1,284 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penghitung Margin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tools</title>
     <style>
       :root {
+        font-family: sans-serif;
         color-scheme: dark;
       }
-      
+
       body {
         background-color: #222;
-        color: #ddd;
-      }    
-    
-      form {
-        font-weight: bold;
+        color: #eaeaea;
       }
-      
-      input {
-        padding: .3rem;
+
+      .container {
+        max-width: 40rem;
+        margin: auto;
       }
-      
-      p {
-        color: orange;
+
+      .wrapper {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .harga-generator, .penghitung-margin, header {
+        background-color: #333;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .input-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      input[type="text"] {
+        padding: 0.5rem;
+      }
+
+      button {
+        background-color: rgb(191, 0, 0);
+        border-radius: 3px;
+        border: 1px solid white;
+        padding: 0.5rem;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: rgb(146, 0, 0);
+      }
+
+      button:active {
+        background-color: rgb(191, 0, 0);
       }
     </style>
   </head>
   <body>
-    <h2>Penghitung Margin</h2>
-    <p>Alert : khusus bilangan bulat!</p>
-    <form>
-      <label for="harga-beli">Harga NTA : <span></span></label>
-      <br />
-      <br />
-      <input type="text" id="harga-beli" placeholder="Masukkan harga beli" />
-      
-      <br />
-      <br />
-      
-      <label for="harga-jual">Harga Jual : <span></span></label>
-      <br />
-      <br />
-      <input type="text" id="harga-jual" placeholder="Masukkan harga jual" />
-      
-      <br />
-      <br />
-      
-      <label for="point">Point : <span></span> = <span></span></label>
-      <br />
-      <br />
-      <input type="text" id="point" placeholder="Masukkan point">
-      
-      <br />
-      <br />
-      
-      <span>Margin : <span id="margin"></span></span>
-      
-      <br />
-      <br />
-      
-      <button>Reset</button>
-    </form>
-    
+    <div class="container">
+      <div class="wrapper">
+        <header>
+          <h3>Alert : Wajib bilangan bulat</h3>
+        </header>
+        <form class="harga-generator">
+          <h2>Harga Hotel Generator</h2>
+          <div class="input-wrapper">
+            <label for="harga-nta"
+              >Harga NTA : <span class="text-nilai-nta">Rp 0</span></label
+            >
+            <input type="text" id="harga-nta" />
+          </div>
+          <div class="input-wrapper">
+            <label for="point"
+              >Point : <span class="text-point">0</span> =
+              <span class="text-nilai-point">Rp 0</span></label
+            >
+            <input type="text" id="point" />
+          </div>
+          <div class="input-wrapper">
+            <div>
+              <label for="_99-ribu">99 Ribu</label>
+              <input
+                type="radio"
+                id="_99-ribu"
+                name="nilai-genap"
+                value="99000"
+              />
+              <label for="_90-ribu">90 Ribu</label>
+              <input
+                type="radio"
+                id="_90-ribu"
+                name="nilai-genap"
+                value="90000"
+              />
+            </div>
+          </div>
+          <span>Margin : <span class="text-margin">Rp 0</span></span>
+          <span>Harga Jual : <span class="text-harga-jual">Rp 0</span></span>
+          <button type="submit">Reset</button>
+        </form>
+        <form class="penghitung-margin">
+          <h2>Penghitung Margin</h2>
+          <div class="input-wrapper">
+            <label for="harga-nta"
+              >Harga NTA : <span class="text-nilai-nta">Rp 0</span></label
+            >
+            <input type="text" id="harga-nta" />
+          </div>
+          <div class="input-wrapper">
+            <label for="harga-jual"
+              >Harga Jual : <span class="text-nilai-jual">Rp 0</span></label
+            >
+            <input type="text" id="harga-jual" />
+          </div>
+          <div class="input-wrapper">
+            <label for="point"
+              >Point : <span class="text-point">0</span> =
+              <span class="text-nilai-point">Rp 0</span></label
+            >
+            <input type="text" id="point" />
+          </div>
+          <span
+            >Total Margin : <span class="text-total-margin">Rp 0</span></span
+          >
+          <button type="submit">Reset</button>
+        </form>
+      </div>
+    </div>
+
     <script>
-      function toIDR(value) {
-        if (nilaiDefault.includes(",00")) {
-          return value
-          .toLocaleString("id-ID", { style: "currency", currency: "IDR" });
-        }
-        
-        return value.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }).replace(",00", '');
-      }
-      
-      function getLabelValue(element) {
-        return element
-          .previousElementSibling
-          .previousElementSibling
-          .previousElementSibling
-          .firstElementChild;
-      }
-      
-      function setDefault() {
-        getLabelValue(hargaBeli).textContent = nilaiDefault;
-        getLabelValue(hargaJual).textContent = nilaiDefault;
-        getLabelValue(point).textContent = "0";
-        getLabelValue(point).nextElementSibling.textContent = nilaiDefault;
-        marginElement.textContent = nilaiDefault;
-        marginElement.style.color = "orange";
-      }
-      
-      const nilaiDefault = "Rp 0";
       const perPoint = 5000;
-      const form = document.querySelector("form");
-      const button = document.querySelector("button");
-      const inputs = document.querySelectorAll("input");
-      const hargaBeli = document.getElementById("harga-beli");
-      const hargaJual = document.getElementById("harga-jual");
-      const point = document.getElementById("point");
-      const marginElement = document.getElementById("margin");
       
-      setDefault();
+      function toIDR(value) {
+        return value
+          .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+          .replace(",00", "");
+      }
       
-      inputs.forEach((input) => {
-        input.addEventListener("input", function() {
-          const labelValue = getLabelValue(this);
-          
-          this.value = this.value.replace(/[^\d]/g, "");
-          
-          if (this.id === "point") {
-            const pointResult = Number(this.value);
-            const result = Number(this.value) * perPoint;
-            
-            labelValue.textContent = pointResult;
-            labelValue.nextElementSibling.textContent = toIDR(result);
-          } else {
-            const result = Number(this.value);
-            
-            labelValue.textContent = toIDR(result);
+      function setDefault(tipe) {
+        const spans = document.querySelectorAll(`.${tipe} span`);
+
+        spans.forEach((span) => {
+          if (span.childNodes[0].nodeValue.includes("Rp")) {
+            span.textContent = "Rp 0";
           }
-          
-          const margin = Number(hargaJual.value) - Number(hargaBeli.value) + Number(point.value) * perPoint;
-        
-           marginElement.textContent = toIDR(margin);
-           
-           if (margin > 0) {
-             marginElement.style.color = "green";
-           } else if (margin < 0) {
-             marginElement.style.color = "red";
-           } else {
-             marginElement.style.color = "orange";
-           }
+
+          if (span.classList.contains("text-point")) {
+            span.textContent = "0";
+          }
         });
-      });
-      
-      button.addEventListener("click", function(e) {
-        e.preventDefault();
+       }
        
-        setDefault();
+      // HARGA HOTEL GENERATOR
+      (() => {
+        function getMargin(nta) {
+          if (nta > 0 && nta < 2000000) return 100000;
+          if (nta >= 2000000 && nta < 4000000) return 150000;
+          if (nta >= 4000000 && nta < 6000000) return 200000;
+          if (nta >= 6000000 && nta < 8000000) return 250000;
+          if (nta >= 8000000 && nta < 10000000) return 300000;
+          if (nta >= 10000000 && nta < 12000000) return 350000;
+          if (nta >= 12000000 && nta < 14000000) return 400000;
+          if (nta >= 14000000 && nta < 16000000) return 450000;
+          if (nta >= 16000000 && nta < 18000000) return 500000;
+          if (nta >= 18000000 && nta < 20000000) return 550000;
+          if (nta >= 20000000) return 600000;
+
+          return 0;
+        }
+
+        const hargaNTA = document.querySelector(".harga-generator #harga-nta");
+        const point = document.querySelector(".harga-generator #point");
+        const inputs = document.querySelectorAll(".harga-generator input");
+        const radio = document.querySelectorAll(
+          ".harga-generator input[type=radio]"
+        );
+        const textHargaJual = document.querySelector(
+          ".harga-generator .text-harga-jual"
+        );
+        const textMargin = document.querySelector(
+          ".harga-generator .text-margin"
+        );
+        const form = document.querySelector("form.harga-generator");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          setDefault("harga-generator");
+
+          this.reset();
+        });
+
+        inputs.forEach((input) => {
+          input.addEventListener("input", function () {
+            this.value = this.value.replace(/[^\d]/g, "");
+
+            const textNilai = this.previousElementSibling.firstElementChild;
+
+            if (textNilai) {
+              if (textNilai.textContent.includes("Rp")) {
+                textNilai.textContent = toIDR(Number(this.value));
+              } else {
+                textNilai.textContent = Number(this.value);
+                textNilai.nextElementSibling.textContent = toIDR(
+                  this.value * perPoint
+                );
+              }
+            }
+
+            const margin = getMargin(Number(hargaNTA.value));
+            const totalHarga =
+              Number(hargaNTA.value) - Number(point.value) * perPoint + margin;
+
+            textMargin.textContent = toIDR(margin);
+            textHargaJual.textContent = toIDR(totalHarga);
+
+            if (this.getAttribute("type") === "radio") {
+              const totalHargaString = totalHarga.toString();
+              const totalHargaKeseluruhan = Number(
+                totalHargaString.slice(0, totalHargaString.length - 5) +
+                  this.value
+              );
+
+              textHargaJual.textContent = toIDR(totalHargaKeseluruhan);
+            } else {
+              radio.forEach((item) => (item.checked = false));
+            }
+          });
+        });
+      })();
+      
+      // PENGHITUNG MARGIN
+      (() => {
+        const hargaNTA = document.querySelector(".penghitung-margin #harga-nta");
+        const hargaJual = document.querySelector(".penghitung-margin #harga-jual");
+        const point = document.querySelector(".penghitung-margin #point");
+        const inputs = document.querySelectorAll(".penghitung-margin input");
+        const textTotalMargin = document.querySelector(
+          ".penghitung-margin .text-total-margin"
+        );
+        const form = document.querySelector("form.penghitung-margin");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          setDefault("penghitung-margin");
+
+          this.reset();
+        });
         
-        form.reset();
-      });
+        inputs.forEach((input) => {
+          input.addEventListener("input", function() {
+            this.value = this.value.replace(/[^\d]/g, "");
+
+            const textNilai = this.previousElementSibling.firstElementChild;
+            
+            if (textNilai) {
+              if (textNilai.textContent.includes("Rp")) {
+                textNilai.textContent = toIDR(Number(this.value));
+              } else {
+                textNilai.textContent = Number(this.value);
+                textNilai.nextElementSibling.textContent = toIDR(
+                  this.value * perPoint
+                );
+              }
+            }
+            
+            const totalMargin = Number(hargaJual.value) - Number(hargaNTA.value) + Number(point.value) * perPoint;
+            
+            textTotalMargin.textContent = toIDR(totalMargin);
+          });
+        });
+      })();
     </script>
   </body>
 </html>
